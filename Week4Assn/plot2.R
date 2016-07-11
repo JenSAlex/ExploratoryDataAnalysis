@@ -1,0 +1,11 @@
+SCC<-readRDS("Source_Classification_Code.rds")
+NEI<-readRDS("summarySCC_PM25.rds")
+baltMD<-subset(NEI,NEI$fips=="24510")
+emTotal<-aggregate(Emissions~year,data=baltMD, FUN=sum)
+barplot(emTotal$Emissions,names=emTotal$year,xlab="Years",ylab="PM2.5 Emissions", main="Total PM2.5 Emissions in Baltimore,MD")
+reg<-lm(Emissions~year,emTotal)
+lmline<-reg$fitted.values
+names(lmline)<-c("1999","2002","2005","2008")
+lines(lmline,lwd=2,col="blue")
+dev.copy(png,"plot2.png")
+dev.off()
